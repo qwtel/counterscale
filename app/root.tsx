@@ -79,7 +79,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                 <Scripts />
                 <script
                     dangerouslySetInnerHTML={{
-                        __html: "window.counterscale = {'q': [['set', 'siteId', 'counterscale-dev'], ['trackPageview']] };",
+                        __html: "window.counterscale = {'q': [['set', 'siteId', 'counterscale-bio.pages.dev'], ['trackPageview']] };",
                     }}
                 ></script>
                 <script id="counterscale-script" src="/tracker.js"></script>
