@@ -19,7 +19,7 @@ export default function Index() {
                     <Button>
                         <a
                             className="capitalize"
-                            href="https://github.com/benvinegar/counterscale"
+                            href="https://github.com/qwtel/counterscale"
                         >
                             Get Started
                             <span className="hidden sm:inline">

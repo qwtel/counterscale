@@ -114,7 +114,7 @@ export default function App() {
                             Admin
                         </a>
                         <a
-                            href="https://github.com/benvinegar/counterscale"
+                            href="https://github.com/qwtel/counterscale"
                             className="w-8 ml-2 sm:ml-4"
                         >
                             <img
@@ -136,7 +136,7 @@ export default function App() {
                 <div>
                     Version{" "}
                     <a
-                        href={`https://github.com/benvinegar/counterscale/commit/${data.version}`}
+                        href={`https://github.com/qwtel/counterscale/commit/${data.version}`}
                     >
                         {data.version?.slice(0, 7)}
                     </a>
