@@ -77,6 +77,7 @@ module.exports = {
                     "error",
                     { argsIgnorePattern: "^_" },
                 ],
+                "@typescript-eslint/no-explicit-any": 0,
             },
             extends: [
                 "plugin:@typescript-eslint/recommended",
