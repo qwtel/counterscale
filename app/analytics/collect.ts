@@ -1,6 +1,6 @@
 import { UAParser } from "ua-parser-js";
 
-import type { RequestInit } from "@cloudflare/workers-types";
+import type { Request } from "@cloudflare/workers-types";
 
 function checkVisitorSession(ifModifiedSince: string | null): {
     newVisitor: boolean;
@@ -67,7 +67,7 @@ export function collectRequestHandler(request: Request, env: Env) {
     }
 
     const data: DataPoint = {
-        siteId: params.sid,
+        siteId: params.i ?? params.sid,
         host: params.h,
         path: params.p,
         referrer,
@@ -81,9 +81,27 @@ export function collectRequestHandler(request: Request, env: Env) {
 
     // NOTE: location is derived from Cloudflare-specific request properties
     // see: https://developers.cloudflare.com/workers/runtime-apis/request/#incomingrequestcfproperties
-    const country = (request as RequestInit).cf?.country;
+    const country = request.cf?.country;
     if (typeof country === "string") {
         data.country = country;
+    }
+    const city = request.cf?.city;
+    if (typeof city === "string") {
+        data.city = city;
+    }
+    const region = request.cf?.region;
+    if (typeof region === "string") {
+        data.region = region;
+    }
+    const latitude = request.cf?.latitude
+        ? Number(request.cf?.latitude)
+        : undefined;
+    const longitude = request.cf?.longitude
+        ? Number(request.cf?.longitude)
+        : undefined;
+    if (latitude && longitude && !isNaN(latitude) && !isNaN(longitude)) {
+        data.latitude = latitude;
+        data.longitude = longitude;
     }
 
     writeDataPoint(env.WEB_COUNTER_AE, data);
@@ -120,6 +138,8 @@ interface DataPoint {
     userAgent?: string;
     path?: string;
     country?: string;
+    region?: string;
+    city?: string;
     referrer?: string;
     browserName?: string;
     deviceModel?: string;
@@ -127,6 +147,8 @@ interface DataPoint {
     // doubles
     newVisitor: number;
     newSession: number;
+    latitude?: number;
+    longitude?: number;
 }
 
 // NOTE: Cloudflare Analytics Engine has limits on total number of bytes, number of fields, etc.
@@ -147,8 +169,15 @@ export function writeDataPoint(
             data.browserName || "", // blob6
             data.deviceModel || "", // blob7
             data.siteId || "", // blob8
+            data.region || "", // blob9
+            data.city || "", // blob10
         ],
-        doubles: [data.newVisitor || 0, data.newSession || 0],
+        doubles: [
+            data.newVisitor || 0,
+            data.newSession || 0,
+            data.latitude || 0,
+            data.longitude || 0,
+        ],
     };
 
     if (!analyticsEngine) {

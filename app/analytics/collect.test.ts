@@ -56,20 +56,20 @@ describe("collectRequestHandler", () => {
 
         // verify data shows up in the right place
         expect((writeDataPoint as Mock).mock.calls[0][0]).toEqual({
-            blobs: [
-                "example.com", // host
-                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36", // ua string
-                "/post/123", // url
-                "US", // country
-                "search.brave.com", // referrer
-                "Chrome", // browser name
-                "",
-                "example", // site id
-            ],
-            doubles: [
-                1, // new visitor
-                1, // new session
-            ],
+            blobs: expect.objectContaining({
+                "0": "example.com", // host
+                "1": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36", // ua string
+                "2": "/post/123", // url
+                "3": "US", // country
+                "4": "search.brave.com", // referrer
+                "5": "Chrome", // browser name
+                "6": "",
+                "7": "example", // site id
+            }),
+            doubles: expect.objectContaining({
+                "0": 1, // new visitor
+                "1": 1, // new session
+            }),
             indexes: [
                 "example", // site id is index
             ],
@@ -91,10 +91,10 @@ describe("collectRequestHandler", () => {
         const writeDataPoint = env.WEB_COUNTER_AE.writeDataPoint;
         expect((writeDataPoint as Mock).mock.calls[0][0]).toHaveProperty(
             "doubles",
-            [
-                1, // new visitor
-                1, // new session
-            ],
+            expect.objectContaining({
+                "0": 1, // new visitor
+                "1": 1, // new session
+            }),
         );
     });
 
@@ -119,10 +119,10 @@ describe("collectRequestHandler", () => {
         const writeDataPoint = env.WEB_COUNTER_AE.writeDataPoint;
         expect((writeDataPoint as Mock).mock.calls[0][0]).toHaveProperty(
             "doubles",
-            [
-                0, // NOT a new visitor
-                0, // NOT a new session
-            ],
+            expect.objectContaining({
+                "0": 0, // NOT a new visitor
+                "1": 0, // NOT a new session
+            }),
         );
     });
 
@@ -152,11 +152,11 @@ describe("collectRequestHandler", () => {
         const writeDataPoint = env.WEB_COUNTER_AE.writeDataPoint;
         expect((writeDataPoint as Mock).mock.calls[0][0]).toHaveProperty(
             "doubles",
-            [
-                1, // new visitor because a new day began
-                0, // NOT a new session because continuation of earlier session (< 30 mins)
+            expect.objectContaining({
+                "0": 1, // new visitor because a new day began
+                "1": 0, // NOT a new session because continuation of earlier session (< 30 mins)
                 // (session logic doesn't care if a new day began or not)
-            ],
+            }),
         );
     });
 
@@ -181,10 +181,10 @@ describe("collectRequestHandler", () => {
         const writeDataPoint = env.WEB_COUNTER_AE.writeDataPoint;
         expect((writeDataPoint as Mock).mock.calls[0][0]).toHaveProperty(
             "doubles",
-            [
-                1, // new visitor because > 30 days passed
-                1, // new session because > 30 minutes passed
-            ],
+            expect.objectContaining({
+                "0": 1, // new visitor because > 30 days passed
+                "1": 1, // new session because > 30 minutes passed
+            }),
         );
     });
 
@@ -209,10 +209,10 @@ describe("collectRequestHandler", () => {
         const writeDataPoint = env.WEB_COUNTER_AE.writeDataPoint;
         expect((writeDataPoint as Mock).mock.calls[0][0]).toHaveProperty(
             "doubles",
-            [
-                1, // new visitor because > 24 hours passed
-                1, // new session because > 30 minutes passed
-            ],
+            expect.objectContaining({
+                "0": 1, // new visitor because > 24 hours passed
+                "1": 1, // new session because > 30 minutes passed
+            }),
         );
     });
 });

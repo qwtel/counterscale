@@ -137,11 +137,11 @@ SOFTWARE.
         referrer = referrer.split("?")[0];
 
         const d = {
+            i: config.siteId,
             p: path,
             s: search,
             h: hostname,
             r: referrer,
-            sid: config.siteId,
         };
 
         let url = config.trackerUrl || findTrackerUrl();
