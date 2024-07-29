@@ -31,12 +31,12 @@ SOFTWARE.
 
 */
 
-(function () {
+(function (window, document) {
     "use strict";
 
     let queue = (window.counterscale && window.counterscale.q) || [];
     let config = {
-        siteId: "",
+        siteId: window.location.hostname,
         trackerUrl: "",
     };
     const commands = {
@@ -116,15 +116,17 @@ SOFTWARE.
             req = a;
         }
 
-        let path = vars.path || req.pathname + req.search;
+        let path = vars.path || req.pathname;
         if (!path) {
             path = "/";
         }
         // strip query string from path
         path = path.split("?")[0];
 
+        const search = vars.search || req.search;
+
         // determine hostname
-        let hostname = vars.hostname || req.protocol + "//" + req.hostname;
+        let hostname = vars.hostname || req.hostname;
 
         // only set referrer if not internal
         let referrer = vars.referrer || "";
@@ -136,6 +138,7 @@ SOFTWARE.
 
         const d = {
             p: path,
+            s: search,
             h: hostname,
             r: referrer,
             sid: config.siteId,
@@ -175,4 +178,4 @@ SOFTWARE.
 
     // process existing queue
     queue.forEach((i) => counterscale.apply(this, i));
-})();
+})(window, document);

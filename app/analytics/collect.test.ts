@@ -17,7 +17,7 @@ function generateRequestParams(headers: Record<string, string>) {
                 sid: "example",
                 h: "example.com",
                 p: "/post/123",
-                r: "https://google.com",
+                r: "https://search.brave.com",
                 nv: "1",
                 ns: "1",
             }).toString(),
@@ -61,7 +61,7 @@ describe("collectRequestHandler", () => {
                 "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36", // ua string
                 "/post/123", // url
                 "US", // country
-                "https://google.com", // referrer
+                "search.brave.com", // referrer
                 "Chrome", // browser name
                 "",
                 "example", // site id

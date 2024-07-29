@@ -36,23 +36,13 @@ function checkVisitorSession(ifModifiedSince: string | null): {
     return { newVisitor, newSession };
 }
 
-function extractParamsFromQueryString(requestUrl: string): {
-    [key: string]: string;
-} {
-    const url = new URL(requestUrl);
-    const queryString = url.search.slice(1).split("&");
-
-    const params: { [key: string]: string } = {};
-
-    queryString.forEach((item) => {
-        const kv = item.split("=");
-        if (kv[0]) params[kv[0]] = decodeURIComponent(kv[1]);
-    });
-    return params;
+function extractParamsFromQueryString(url: URL): Record<string, string> {
+    return Object.fromEntries(url.searchParams);
 }
 
 export function collectRequestHandler(request: Request, env: Env) {
-    const params = extractParamsFromQueryString(request.url);
+    const url = new URL(request.url);
+    const params = extractParamsFromQueryString(url);
 
     const userAgent = request.headers.get("user-agent") || undefined;
     const parsedUserAgent = new UAParser(userAgent);
@@ -63,15 +53,28 @@ export function collectRequestHandler(request: Request, env: Env) {
         request.headers.get("if-modified-since"),
     );
 
+    const search = params.s ? new URLSearchParams(params.s) : undefined;
+    let referrer = search?.get("ref") || params.r;
+
+    if (referrer && URL.canParse(referrer)) {
+        const url = new URL(referrer);
+        if (url.protocol === "http:" || url.protocol === "https:") {
+            referrer = url.hostname;
+        }
+        if (referrer.startsWith("www.")) {
+            referrer = referrer.substring(4);
+        }
+    }
+
     const data: DataPoint = {
         siteId: params.sid,
         host: params.h,
         path: params.p,
-        referrer: params.r,
+        referrer,
         newVisitor: newVisitor ? 1 : 0,
         newSession: newSession ? 1 : 0,
         // user agent stuff
-        userAgent: userAgent,
+        userAgent,
         browserName: parsedUserAgent.getBrowser().name,
         deviceModel: parsedUserAgent.getDevice().model,
     };
