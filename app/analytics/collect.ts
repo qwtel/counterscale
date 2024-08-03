@@ -2,6 +2,10 @@ import { UAParser } from "ua-parser-js";
 
 import type { Request } from "@cloudflare/workers-types";
 
+// encode 1x1 transparent gif
+const gif = "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+const gifData = atob(gif);
+
 function checkVisitorSession(ifModifiedSince: string | null): {
     newVisitor: boolean;
     newSession: boolean;
@@ -40,7 +44,7 @@ function extractParamsFromQueryString(url: URL): Record<string, string> {
     return Object.fromEntries(url.searchParams);
 }
 
-export function collectRequestHandler(request: Request, env: Env) {
+export async function collectRequestHandler(request: Request, env: Env) {
     const url = new URL(request.url);
     const params = extractParamsFromQueryString(url);
 
@@ -106,9 +110,6 @@ export function collectRequestHandler(request: Request, env: Env) {
 
     writeDataPoint(env.WEB_COUNTER_AE, data);
 
-    // encode 1x1 transparent gif
-    const gif = "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
-    const gifData = atob(gif);
     const gifLength = gifData.length;
     const arrayBuffer = new ArrayBuffer(gifLength);
     const uintArray = new Uint8Array(arrayBuffer);
@@ -152,7 +153,7 @@ interface DataPoint {
 }
 
 // NOTE: Cloudflare Analytics Engine has limits on total number of bytes, number of fields, etc.
-// More here: https://developers.cloudflare.com/analytics/analytics-engine/get-started/#limits
+// More here: https://developers.cloudflare.com/analytics/analytics-engine/limits/
 
 export function writeDataPoint(
     analyticsEngine: AnalyticsEngineDataset,
