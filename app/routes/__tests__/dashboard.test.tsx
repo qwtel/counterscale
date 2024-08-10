@@ -308,7 +308,7 @@ describe("Dashboard route", () => {
                         },
                     },
                     {
-                        path: "/resources/device",
+                        path: "/resources/os",
                         loader: () => {
                             return json({ countsByProperty: [] });
                         },
@@ -324,7 +324,7 @@ describe("Dashboard route", () => {
         expect(screen.getByText("Referrer")).toBeInTheDocument();
         expect(screen.getByText("Browser")).toBeInTheDocument();
         expect(screen.getByText("Country")).toBeInTheDocument();
-        expect(screen.getByText("Device")).toBeInTheDocument();
+        expect(screen.getByText("OS")).toBeInTheDocument();
     });
 
     const defaultMockedLoaderJson = {
@@ -409,13 +409,13 @@ describe("Dashboard route", () => {
                         },
                     },
                     {
-                        path: "/resources/device",
+                        path: "/resources/os",
                         loader: () => {
                             return json({
                                 countsByProperty: [
-                                    ["Desktop", 100],
-                                    ["Mobile", 80],
-                                    ["Tablet", 60],
+                                    ["Windows", 100],
+                                    ["masOS", 80],
+                                    ["Linux", 60],
                                 ],
                             });
                         },
@@ -437,6 +437,6 @@ describe("Dashboard route", () => {
         expect(screen.getByText("Chrome")).toBeInTheDocument();
         expect(screen.getByText("google.com")).toBeInTheDocument();
         expect(screen.getByText("Canada")).toBeInTheDocument(); // assert converted CA -> Canada
-        expect(screen.getByText("Mobile")).toBeInTheDocument();
+        expect(screen.getByText("Windows")).toBeInTheDocument();
     });
 });

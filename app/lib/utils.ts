@@ -18,6 +18,7 @@ interface SearchFilters {
     path?: string;
     referrer?: string;
     deviceModel?: string;
+    os?: string;
     country?: string;
     browserName?: string;
 }
@@ -33,6 +34,9 @@ export function getFiltersFromSearchParams(searchParams: URLSearchParams) {
     }
     if (searchParams.has("deviceModel")) {
         filters.deviceModel = searchParams.get("deviceModel") || "";
+    }
+    if (searchParams.has("os")) {
+        filters.os = searchParams.get("os") || "";
     }
     if (searchParams.has("country")) {
         filters.country = searchParams.get("country") || "";

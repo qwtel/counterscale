@@ -51,7 +51,7 @@ export async function collectRequestHandler(request: Request, env: Env) {
     const userAgent = request.headers.get("user-agent") || undefined;
     const parsedUserAgent = new UAParser(userAgent);
 
-    parsedUserAgent.getBrowser().name;
+    const browserName = parsedUserAgent.getBrowser().name;
 
     const { newVisitor, newSession } = checkVisitorSession(
         request.headers.get("if-modified-since"),
@@ -79,8 +79,9 @@ export async function collectRequestHandler(request: Request, env: Env) {
         newSession: newSession ? 1 : 0,
         // user agent stuff
         userAgent,
-        browserName: parsedUserAgent.getBrowser().name,
+        browserName,
         deviceModel: parsedUserAgent.getDevice().model,
+        os: parsedUserAgent.getOS().name,
     };
 
     // NOTE: location is derived from Cloudflare-specific request properties
@@ -144,6 +145,7 @@ interface DataPoint {
     referrer?: string;
     browserName?: string;
     deviceModel?: string;
+    os?: string;
 
     // doubles
     newVisitor: number;
@@ -163,7 +165,7 @@ export function writeDataPoint(
         indexes: [data.siteId || ""], // Supply one index
         blobs: [
             data.host || "", // blob1
-            data.userAgent || "", // blob2
+            data.userAgent || "", // blob2 // XXX: Should probably stop writign user agent. Takes up a bunch of space, and not actually used in the UI.
             data.path || "", // blob3
             data.country || "", // blob4
             data.referrer || "", // blob5
@@ -172,6 +174,7 @@ export function writeDataPoint(
             data.siteId || "", // blob8
             data.region || "", // blob9
             data.city || "", // blob10
+            data.os || "", // blob11
         ],
         doubles: [
             data.newVisitor || 0,

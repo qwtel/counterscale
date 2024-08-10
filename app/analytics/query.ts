@@ -117,6 +117,7 @@ function filtersToSql(filters: SearchFilters) {
         "browserName",
         "country",
         "deviceModel",
+        "os",
     ];
 
     let filterStr = "";
@@ -561,6 +562,23 @@ export class AnalyticsEngineAPI {
         return this.getVisitorCountByColumn(
             siteId,
             "deviceModel",
+            interval,
+            tz,
+            filters,
+            page,
+        );
+    }
+
+    async getCountByOS(
+        siteId: string,
+        interval: string,
+        tz?: string,
+        filters: SearchFilters = {},
+        page: number = 1,
+    ) {
+        return this.getVisitorCountByColumn(
+            siteId,
+            "os",
             interval,
             tz,
             filters,

@@ -19,7 +19,8 @@ import { ReferrerCard } from "./resources.referrer";
 import { PathsCard } from "./resources.paths";
 import { BrowserCard } from "./resources.browser";
 import { CountryCard } from "./resources.country";
-import { DeviceCard } from "./resources.device";
+// import { DeviceCard } from "./resources.device";
+import { OSCard } from "./resources.os";
 
 import TimeSeriesChart from "~/components/TimeSeriesChart";
 import dayjs from "dayjs";
@@ -334,7 +335,7 @@ export default function Dashboard() {
                         onFilterChange={handleFilterChange}
                     />
 
-                    <DeviceCard
+                    <OSCard
                         siteId={data.siteId}
                         interval={data.interval}
                         filters={data.filters}

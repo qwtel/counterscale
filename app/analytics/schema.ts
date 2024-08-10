@@ -21,6 +21,7 @@ export const ColumnMappings = {
     referrer: "blob5",
     browserName: "blob6",
     deviceModel: "blob7",
+    os: "blob11",
     siteId: "blob8",
 
     /**
