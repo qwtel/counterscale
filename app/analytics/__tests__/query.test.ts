@@ -9,7 +9,7 @@ import {
     beforeAll,
 } from "vitest";
 
-import { AnalyticsEngineAPI, intervalToSql } from "./query";
+import { AnalyticsEngineAPI, intervalToSql } from "../query";
 
 function createFetchResponse<T>(data: T) {
     return {
@@ -287,6 +287,53 @@ describe("AnalyticsEngineAPI", () => {
                 ["foo.com", 100],
                 ["test.dev", 90],
             ]);
+        });
+    });
+
+    describe("getAllCountsByColumn", () => {
+        test("it should return an array of [column, count] tuples", async () => {
+            fetch.mockResolvedValue(
+                createFetchResponse({
+                    data: [
+                        {
+                            blob4: "CA",
+                            count: 3,
+                        },
+                    ],
+                }),
+            );
+
+            const result = api.getAllCountsByColumn(
+                "example.com",
+                "country",
+                "7d",
+                "America/New_York",
+                {
+                    country: "CA",
+                },
+            );
+
+            expect(fetch).toHaveBeenCalled();
+            expect(
+                (fetch as Mock).mock.calls[0][1].body
+                    .replace(/\s+/g, " ") // removes tabs and whitespace from query
+                    .trim(),
+            ).toEqual(
+                "SELECT blob4, " +
+                    "double1 as isVisitor, " +
+                    "double2 as isVisit, " +
+                    "SUM(_sample_interval) as count " +
+                    "FROM metricsDataset WHERE timestamp > NOW() - INTERVAL '7' DAY AND blob8 = 'example.com' AND blob4 = 'CA' " +
+                    "GROUP BY blob4, double1, double2 " +
+                    "ORDER BY count DESC LIMIT 10",
+            );
+            expect(await result).toEqual({
+                CA: {
+                    views: 3,
+                    visitors: 0,
+                    visits: 0,
+                },
+            });
         });
     });
 });

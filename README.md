@@ -47,7 +47,7 @@ The deployment URL can always be changed to go behind a custom domain you own. [
 When Counterscale is deployed, it makes `tracker.js` available at the URL you deployed to:
 
 ```
-https://counterscale.{yoursubdomain}.workers.dev/tracker.js
+https://{subdomain-emitted-from-npm-run-deploy}.pages.dev/tracker.js
 ```
 
 To start tracking website traffic on your web property, copy/paste the following snippet into your website HTML:
@@ -62,7 +62,7 @@ To start tracking website traffic on your web property, copy/paste the following
 </script>
 <script
     id="counterscale-script"
-    src="https://counterscale.{yoursubdomain}.workers.dev/tracker.js"
+    src="https://{subdomain-emitted-from-npm-run-deploy}.pages.dev/tracker.js"
     defer
 ></script>
 ```
