@@ -198,7 +198,10 @@ export default function Dashboard() {
         setSearchParams((prev) => {
             for (const key in filters) {
                 if (Object.hasOwnProperty.call(filters, key)) {
-                    prev.set(key, (filters as any)[key]);
+                    prev.set(
+                        key,
+                        filters[key as keyof SearchFilters] as string,
+                    );
                 }
             }
             return prev;
@@ -255,11 +258,13 @@ export default function Dashboard() {
                     </Select>
                 </div>
 
-                <div className="basis-auto">
-                    <SearchFilterBadges
-                        filters={data.filters}
-                        onFilterDelete={handleFilterDelete}
-                    />
+                <div className="basis-auto flex">
+                    <div className="m-auto">
+                        <SearchFilterBadges
+                            filters={data.filters}
+                            onFilterDelete={handleFilterDelete}
+                        />
+                    </div>
                 </div>
             </div>
 

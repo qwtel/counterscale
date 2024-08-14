@@ -389,7 +389,7 @@ export class AnalyticsEngineAPI {
                 resolve(
                     pageData.map((row) => {
                         const key = row[_column];
-                        return [key, row["count"]] as const;
+                        return [key, Number(row["count"])] as const;
                     }),
                 );
             })(),
@@ -405,7 +405,7 @@ export class AnalyticsEngineAPI {
         filters: SearchFilters = {},
         page: number = 1,
         limit: number = 10,
-    ) {
+    ): Promise<Record<string, AnalyticsCountResult>> {
         const intervalSql = intervalToSql(interval, tz);
 
         const filterStr = filtersToSql(filters);
@@ -481,7 +481,7 @@ export class AnalyticsEngineAPI {
         tz?: string,
         filters: SearchFilters = {},
         page: number = 1,
-    ) {
+    ): Promise<[path: string, visitors: number, views: number][]> {
         const allCountsResultPromise = this.getAllCountsByColumn(
             siteId,
             "path",
@@ -508,7 +508,7 @@ export class AnalyticsEngineAPI {
         tz?: string,
         filters: SearchFilters = {},
         page: number = 1,
-    ) {
+    ): Promise<[country: string, visitors: number][]> {
         return this.getVisitorCountByColumn(
             siteId,
             "country",
@@ -525,8 +525,8 @@ export class AnalyticsEngineAPI {
         tz?: string,
         filters: SearchFilters = {},
         page: number = 1,
-    ) {
-        return this.getVisitorCountByColumn(
+    ): Promise<[referrer: string, visitors: number, views: number][]> {
+        const allCountsResultPromise = this.getAllCountsByColumn(
             siteId,
             "referrer",
             interval,
@@ -534,14 +534,25 @@ export class AnalyticsEngineAPI {
             filters,
             page,
         );
+
+        return allCountsResultPromise.then((allCountsResult) => {
+            const result: [string, number, number][] = [];
+            for (const [key] of Object.entries(allCountsResult)) {
+                const record = allCountsResult[key];
+                result.push([key, record.visitors, record.views]);
+            }
+            // sort by visitors
+            return result.sort((a, b) => b[1] - a[1]);
+        });
     }
+
     async getCountByBrowser(
         siteId: string,
         interval: string,
         tz?: string,
         filters: SearchFilters = {},
         page: number = 1,
-    ) {
+    ): Promise<[browser: string, visitors: number][]> {
         return this.getVisitorCountByColumn(
             siteId,
             "browserName",
@@ -558,7 +569,7 @@ export class AnalyticsEngineAPI {
         tz?: string,
         filters: SearchFilters = {},
         page: number = 1,
-    ) {
+    ): Promise<[deviceModel: string, visitors: number][]> {
         return this.getVisitorCountByColumn(
             siteId,
             "deviceModel",
