@@ -525,8 +525,8 @@ export class AnalyticsEngineAPI {
         tz?: string,
         filters: SearchFilters = {},
         page: number = 1,
-    ): Promise<[referrer: string, visitors: number, views: number][]> {
-        const allCountsResultPromise = this.getAllCountsByColumn(
+    ): Promise<[referrer: string, visitors: number][]> {
+        return this.getVisitorCountByColumn(
             siteId,
             "referrer",
             interval,
@@ -534,16 +534,6 @@ export class AnalyticsEngineAPI {
             filters,
             page,
         );
-
-        return allCountsResultPromise.then((allCountsResult) => {
-            const result: [string, number, number][] = [];
-            for (const [key] of Object.entries(allCountsResult)) {
-                const record = allCountsResult[key];
-                result.push([key, record.visitors, record.views]);
-            }
-            // sort by visitors
-            return result.sort((a, b) => b[1] - a[1]);
-        });
     }
 
     async getCountByBrowser(
