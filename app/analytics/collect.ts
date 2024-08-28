@@ -70,8 +70,17 @@ export async function collectRequestHandler(request: Request, env: Env) {
         }
     }
 
+    const sentSiteId = params.i ?? params.sid ?? "";
+    const httpSiteId = sentSiteId.match(/^https?:\/\/$/)
+        ? sentSiteId
+        : `http://${sentSiteId}`;
+    const siteId = URL.canParse(httpSiteId)
+        ? new URL(httpSiteId).hostname
+        : null;
+    if (!siteId) return new Response("Invalid site ID", { status: 400 });
+
     const data: DataPoint = {
-        siteId: params.i ?? params.sid,
+        siteId,
         host: params.h,
         path: params.p,
         referrer,

@@ -140,7 +140,12 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
             siteId: siteId,
             sites: (await sitesByHits)
                 .map(([site, _]: [string, number]) => site)
-                .filter((site) => site !== "counterscale-dev"),
+                .filter(
+                    (site) =>
+                        site &&
+                        site !== "counterscale-dev" &&
+                        !site.includes("&"),
+                ),
             views: (await counts).views,
             visits: (await counts).visits,
             visitors: (await counts).visitors,
