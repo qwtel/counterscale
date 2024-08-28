@@ -45,6 +45,28 @@ export const Layout = ({ children = [] }: { children: React.ReactNode }) => {
                     content="width=device-width, initial-scale=1"
                 />
                 <link rel="icon" type="image/x-icon" href="/favicon.png" />
+                <link rel="manifest" href="/app.webmanifest"></link>
+
+                <meta
+                    name="theme-color"
+                    media="(prefers-color-scheme: light)"
+                    content="hsl(42 69% 85%)"
+                />
+                <meta
+                    name="theme-color"
+                    media="(prefers-color-scheme: dark)"
+                    content="hsl(222.2 84% 3.9%)"
+                />
+                <meta
+                    name="background-color"
+                    media="(prefers-color-scheme: light)"
+                    content="hsl(42 69% 85%)"
+                />
+                <meta
+                    name="background-color"
+                    media="(prefers-color-scheme: dark)"
+                    content="hsl(222.2 84% 3.9%)"
+                />
 
                 <meta property="og:url" content={data.url} />
                 <meta property="og:type" content="website" />

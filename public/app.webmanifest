@@ -1,0 +1,25 @@
+{
+    "short_name": "Counterscale",
+    "name": "Counterscale",
+    "description": "Scalable web analytics you run yourself on Cloudflare",
+    "icons": [
+        {
+            "src": "/counterscale-icon.png",
+            "sizes": "1000x1000",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/counterscale-icon.png",
+            "sizes": "1000x1000",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ],
+    "id": "/dashboard?source=app",
+    "start_url": "/dashboard?source=app",
+    "display": "minimal-ui",
+    "scope": "/dashboard",
+    "theme_color": "hsl(42 69% 85%)",
+    "background_color": "hsl(42 69% 85%)"
+}
