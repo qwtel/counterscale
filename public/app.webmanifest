@@ -22,10 +22,10 @@
             "purpose": "any"
         }
     ],
-    "id": "/?source=app",
-    "start_url": "/?source=app",
+    "id": "/dashboard?source=app",
+    "start_url": "/dashboard?source=app",
     "display": "minimal-ui",
-    "scope": "/",
+    "scope": "/dashboard",
     "theme_color": "hsl(42 69% 85%)",
     "background_color": "hsl(42 69% 85%)"
 }
