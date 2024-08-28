@@ -10,14 +10,8 @@
             "purpose": "maskable"
         },
         {
-            "src": "/counterscale-icon-300x300.png",
-            "sizes": "300x300",
-            "type": "image/png",
-            "purpose": "maskable"
-        },
-        {
-            "src": "/counterscale-icon-300x300.png",
-            "sizes": "300x300",
+            "src": "/counterscale-icon.png",
+            "sizes": "1000x1000",
             "type": "image/png",
             "purpose": "any"
         }
