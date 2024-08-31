@@ -114,7 +114,7 @@ export default function App() {
     const data = useLoaderData<typeof loader>();
     return (
         <div className="mt-4">
-            <header className="border-b-2 mb-8 py-2">
+            <header className="border-b-2 mb-6 py-2">
                 <nav className="flex justify-between items-center">
                     <div className="flex items-center">
                         <a href="/" className="text-lg font-bold">

@@ -222,7 +222,7 @@ export default function Dashboard() {
 
     return (
         <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-            <div className="w-full mb-4 flex gap-4 flex-wrap">
+            <div className="w-full py-2 flex gap-4 flex-wrap sticky top-0 z-20 bg-background">
                 <div className="lg:basis-1/5-gap-4 sm:basis-1/4-gap-4 basis-1/2-gap-4">
                     <Select
                         defaultValue={data.siteId}
@@ -274,8 +274,9 @@ export default function Dashboard() {
             </div>
 
             <div className="transition" style={{ opacity: loading ? 0.6 : 1 }}>
-                <div className="w-full mb-4">
+                <div className="w-full mb-4 mt-2">
                     <Card>
+                        <div className="sticky top-[3.5rem] border-t-2 z-10" style={{ marginTop: '-2px' }}></div>
                         <div className="p-4 pl-6">
                             <div className="grid grid-cols-3 gap-10 items-end">
                                 <div>
@@ -306,6 +307,7 @@ export default function Dashboard() {
                 </div>
                 <div className="w-full mb-4">
                     <Card>
+                        <div className="sticky top-[3.5rem] border-t-2 z-10" style={{ marginTop: '-2px' }}></div>
                         <CardContent>
                             <div className="h-72 pt-6 -m-4 -ml-8 sm:m-0">
                                 <TimeSeriesChart
