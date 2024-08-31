@@ -154,15 +154,17 @@ export default function App() {
                 <Outlet />
             </main>
 
-            <footer className="py-4 flex justify-end text-s">
-                <div>
-                    Version{" "}
+            <footer className="pt-4 pb-8 flex justify-between text-s">
+                <small className="text-muted-foreground">Counterscale: Web Analytics</small>
+                <small>
+                    <span className="text-muted-foreground">Version</span>
+                    {" "}
                     <a
                         href={`https://github.com/qwtel/counterscale/commit/${data.version}`}
                     >
                         {data.version?.slice(0, 7)}
                     </a>
-                </div>
+                </small>
             </footer>
         </div>
     );
