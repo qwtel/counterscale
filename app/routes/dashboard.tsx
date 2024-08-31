@@ -274,7 +274,7 @@ export default function Dashboard() {
             </div>
 
             <div className="transition" style={{ opacity: loading ? 0.6 : 1 }}>
-                <div className="w-full mb-4 mt-2">
+                <div className="w-full mb-8 mt-5">
                     <Card>
                         <div className="sticky top-[3.5rem] border-t-2 z-10" style={{ marginTop: '-2px' }}></div>
                         <div className="p-4 pl-6">
@@ -305,7 +305,7 @@ export default function Dashboard() {
                         </div>
                     </Card>
                 </div>
-                <div className="w-full mb-4">
+                <div className="w-full mb-8">
                     <Card>
                         <div className="sticky top-[3.5rem] border-t-2 z-10" style={{ marginTop: '-2px' }}></div>
                         <CardContent>
@@ -318,7 +318,7 @@ export default function Dashboard() {
                         </CardContent>
                     </Card>
                 </div>
-                <div className="grid md:grid-cols-2 gap-4 mb-4">
+                <div className="grid md:grid-cols-2 gap-4 mb-8">
                     <PathsCard
                         siteId={data.siteId}
                         interval={data.interval}
