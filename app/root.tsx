@@ -154,7 +154,11 @@ export default function App() {
                 <Outlet />
             </main>
 
-            <footer className="pt-4 pb-8 flex justify-between text-s">
+            <div className="py-4"/>
+            <div className="sticky bottom-6 border-t-2 z-20 translate-y-[-1px]"></div>
+            <div className="py-2"/>
+
+            <footer className="py-1 sticky bottom-0 bg-background flex justify-between text-s z-10">
                 <small className="text-muted-foreground">Counterscale: Web Analytics</small>
                 <small>
                     <span className="text-muted-foreground">Version</span>
@@ -166,6 +170,7 @@ export default function App() {
                     </a>
                 </small>
             </footer>
+            <div className="py-6"/>
         </div>
     );
 }

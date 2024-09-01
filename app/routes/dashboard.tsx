@@ -273,10 +273,12 @@ export default function Dashboard() {
                 </div>
             </div>
 
+            <div className="sticky top-[3.25rem] bg-background z-30" style={{ height: 2 }}></div>
+            <div className="sticky top-[3.5rem] border-t-2 z-20 translate-y-[-2px]"></div>
+
             <div className="transition" style={{ opacity: loading ? 0.6 : 1 }}>
-                <div className="w-full mb-8 mt-5">
+                <div className="w-full mb-8 mt-4">
                     <Card>
-                        <div className="sticky top-[3.5rem] border-t-2 z-10" style={{ marginTop: '-2px' }}></div>
                         <div className="p-4 pl-6">
                             <div className="grid grid-cols-3 gap-10 items-end">
                                 <div>
@@ -307,7 +309,6 @@ export default function Dashboard() {
                 </div>
                 <div className="w-full mb-8">
                     <Card>
-                        <div className="sticky top-[3.5rem] border-t-2 z-10" style={{ marginTop: '-2px' }}></div>
                         <CardContent>
                             <div className="h-72 pt-6 -m-4 -ml-8 sm:m-0">
                                 <TimeSeriesChart

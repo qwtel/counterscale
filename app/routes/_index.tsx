@@ -56,7 +56,7 @@ export default function Index() {
                 </div>
             </div>
 
-            <div className="flex flex-wrap border-b-2 ">
+            <div className="flex flex-wrap">
                 <div className="md:basis-1/2 mb-8">
                     <h3 className="text-3xl mb-4">Free and open source</h3>
                     <p>

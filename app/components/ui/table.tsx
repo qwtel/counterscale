@@ -23,8 +23,7 @@ const TableHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <div
         ref={ref}
-        className={cn("[&_tr]:border-b grid sticky top-[3.5rem] bg-card border-t-2 z-10", className)}
-        style={{ ...props.style, marginTop: '-2px' }}
+        className={cn("[&_tr]:border-b grid sticky top-[3.5rem] bg-card z-10", className)}
         {...props}
     />
 ));

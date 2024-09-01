@@ -14,7 +14,7 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({
     handlePagination,
 }) => {
     return (
-        <div className="p-2 pr-0 grid grid-cols-[auto,2rem,2rem] text-right border-t sticky bottom-0 bg-card" style={{ marginTop: "-2px" }}>
+        <div className="p-2 pr-0 grid grid-cols-[auto,2rem,2rem] text-right border-t sticky bottom-6 bg-card" style={{ marginTop: "-2px" }}>
             <div></div>
             <button
                 onClick={() => {
