@@ -129,8 +129,8 @@ SOFTWARE.
         let hostname = vars.hostname || req.hostname;
 
         // only set referrer if not internal
-        let referrer = vars.referrer || "";
-        if (document.referrer.indexOf(hostname) < 0) {
+        let referrer = vars.referrer || ('URLSearchParams' in window && new URLSearchParams(window.location.search).get("ref")) || "";
+        if (!referrer && document.referrer.indexOf(hostname) < 0) {
             referrer = document.referrer;
         }
         // strip query string from referrer
