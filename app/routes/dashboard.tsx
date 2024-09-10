@@ -144,6 +144,7 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
                     (site) =>
                         site &&
                         site !== "counterscale-dev" &&
+                        site !== "counterscale-bio.pages.dev" &&
                         !site.includes("&"),
                 ),
             views: (await counts).views,
