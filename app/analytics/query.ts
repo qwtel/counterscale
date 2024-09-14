@@ -421,8 +421,7 @@ export class AnalyticsEngineAPI {
                 AND ${ColumnMappings.siteId} = '${siteId}'
                 ${filterStr}
             GROUP BY ${_column}, ${ColumnMappings.newVisitor}, ${ColumnMappings.newSession}
-            ORDER BY count DESC
-            LIMIT ${limit * page}`;
+            ORDER BY count DESC`;
 
         type SelectionSet = {
             readonly count: number;
@@ -434,45 +433,37 @@ export class AnalyticsEngineAPI {
         >;
 
         const queryResult = this.query(query);
-        const returnPromise = new Promise<Record<string, AnalyticsCountResult>>(
-            (resolve, reject) =>
-                (async () => {
-                    const response = await queryResult;
+        const response = await queryResult;
 
-                    if (!response.ok) {
-                        reject(response.statusText);
-                    }
+        if (!response.ok) {
+            throw response.statusText;
+        }
 
-                    const responseData =
-                        (await response.json()) as AnalyticsQueryResult<SelectionSet>;
+        const responseData =
+            (await response.json()) as AnalyticsQueryResult<SelectionSet>;
 
-                    // since CF AE doesn't support OFFSET clauses, we select up to LIMIT and
-                    // then slice that into the individual requested page
-                    const pageData = responseData.data.slice(
-                        limit * (page - 1),
-                        limit * page,
-                    );
+        const acc = new Map() as Map<string, AnalyticsCountResult>;
+        for (const row of responseData.data) {
+            const key = row[_column] as string;
+            if (!acc.has(key)) {
+                acc.set(key, {
+                    views: 0,
+                    visitors: 0,
+                    visits: 0,
+                } as AnalyticsCountResult);
+            }
 
-                    const result = pageData.reduce(
-                        (acc, row) => {
-                            const key = row[_column] as string;
-                            if (!Object.hasOwn(acc, key)) {
-                                acc[key] = {
-                                    views: 0,
-                                    visitors: 0,
-                                    visits: 0,
-                                } as AnalyticsCountResult;
-                            }
+            accumulateCountsFromRowResult(acc.get(key)!, row);
+        }
 
-                            accumulateCountsFromRowResult(acc[key], row);
-                            return acc;
-                        },
-                        {} as Record<string, AnalyticsCountResult>,
-                    );
-                    resolve(result);
-                })(),
-        );
-        return returnPromise;
+        // since CF AE doesn't support OFFSET clauses, we select up to LIMIT and
+        // then slice that into the individual requested page
+        const result = Object.fromEntries([...acc.entries()].slice(
+            limit * (page - 1),
+            limit * page,
+        ));
+
+        return result;
     }
 
     async getCountByPath(
@@ -482,7 +473,7 @@ export class AnalyticsEngineAPI {
         filters: SearchFilters = {},
         page: number = 1,
     ): Promise<[path: string, visitors: number, views: number][]> {
-        const allCountsResultPromise = this.getAllCountsByColumn(
+        const allCountsResult = await this.getAllCountsByColumn(
             siteId,
             "path",
             interval,
@@ -491,15 +482,12 @@ export class AnalyticsEngineAPI {
             page,
         );
 
-        return allCountsResultPromise.then((allCountsResult) => {
-            const result: [string, number, number][] = [];
-            for (const [key] of Object.entries(allCountsResult)) {
-                const record = allCountsResult[key];
-                result.push([key, record.visitors, record.views]);
-            }
-            // sort by visitors
-            return result.sort((a, b) => b[1] - a[1]);
-        });
+        const result: [string, number, number][] = [];
+        for (const [key, record] of Object.entries(allCountsResult)) {
+            result.push([key, record.visitors, record.views]);
+        }
+        // sort by visitors
+        return result.sort((a, b) => b[1] - a[1]);
     }
 
     async getCountByCountry(
