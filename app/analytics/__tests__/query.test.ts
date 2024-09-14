@@ -325,7 +325,7 @@ describe("AnalyticsEngineAPI", () => {
                     "SUM(_sample_interval) as count " +
                     "FROM metricsDataset WHERE timestamp > NOW() - INTERVAL '7' DAY AND blob8 = 'example.com' AND blob4 = 'CA' " +
                     "GROUP BY blob4, double1, double2 " +
-                    "ORDER BY count DESC LIMIT 10",
+                    "ORDER BY count DESC",
             );
             expect(await result).toEqual({
                 CA: {
