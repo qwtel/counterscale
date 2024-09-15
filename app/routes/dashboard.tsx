@@ -320,7 +320,7 @@ export default function Dashboard() {
                         </CardContent>
                     </Card>
                 </div>
-                <div className="grid md:grid-cols-2 gap-4 mb-8">
+                <div className="grid md:grid-cols-2 gap-8 md:gap-4 mb-8">
                     <PathsCard
                         siteId={data.siteId}
                         interval={data.interval}
@@ -334,7 +334,7 @@ export default function Dashboard() {
                         onFilterChange={handleFilterChange}
                     />
                 </div>
-                <div className="grid md:grid-cols-3 gap-4 mb-4">
+                <div className="grid md:grid-cols-3 gap-8 md:gap-4 mb-4">
                     <BrowserCard
                         siteId={data.siteId}
                         interval={data.interval}
